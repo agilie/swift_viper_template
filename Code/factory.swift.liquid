@@ -1,0 +1,49 @@
+//
+//  {{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import UIKit
+import CocoaLumberjack
+
+struct {{ module_info.name }}Factory : ModuleFactoryProtocol {
+
+    private static let _shared = {{ module_info.name }}Factory()
+
+    static var shared: {{ module_info.name }}Factory {
+        return _shared
+    }
+
+    // MARK: ModuleFactoryProtocol
+    var moduleURN: String {
+        return "{{ module_info.name }}"
+    }
+
+    func createModule(arguments: NamedValuesType, completion: ModuleCompletionHandler?) -> UIViewController {
+        DDLogDebug("Opening module '\(storyboardId)' with controller '\(initialControllerID)'")
+        
+        let storyboard = UIStoryboard(name: storyboardId, bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: initialControllerID)
+        
+        let moduleInput = controller as? ModuleInputProtocol
+        if let moduleInput = moduleInput {
+            moduleInput.setupInitialState(withArguments: arguments, completion: completion)
+        } else {
+            fatalError("\(initialControllerID) moduleInput == nil")
+        }
+        
+        return controller
+    }
+
+    // MARK: Helpers
+    //func createModuleURN(arguments) -> String {
+    //    return URNBuilder(string: moduleURN).buildWithArgs(args: [arguments])
+    //}
+    
+    // MARK:
+    let storyboardId = "{{ module_info.name }}"
+    let initialControllerID = "{{ module_info.name }}ViewController"
+}
