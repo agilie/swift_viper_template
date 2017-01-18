@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CocoaLumberjack
 
 struct {{ module_info.name }}Factory : ModuleFactoryProtocol {
 
@@ -23,7 +22,7 @@ struct {{ module_info.name }}Factory : ModuleFactoryProtocol {
     }
 
     func createModule(arguments: NamedValuesType, completion: ModuleCompletionHandler?) -> UIViewController {
-        DDLogDebug("Opening module '\(storyboardId)' with controller '\(initialControllerID)'")
+        NSLog("Opening module '\(storyboardId)' with controller '\(initialControllerID)'")
         
         let storyboard = UIStoryboard(name: storyboardId, bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: initialControllerID)
